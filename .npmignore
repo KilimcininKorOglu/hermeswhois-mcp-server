@@ -1,0 +1,44 @@
+# Source files
+src/
+*.ts
+!*.d.ts
+
+# Development files
+test-api.js
+test-ssl.js
+whois-api.wantolan.net/
+
+# Build artifacts
+*.log
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# NPM
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Testing
+coverage/
+.nyc_output/
+
+# Documentation (if you don't want to include)
+# README.md
+
+# Config files
+tsconfig.json
+.prettierrc
+.eslintrc*
