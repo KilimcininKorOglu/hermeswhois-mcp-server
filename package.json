@@ -1,25 +1,47 @@
 {
   "name": "hermeswhois-mcp-server",
   "version": "1.0.0",
-  "description": "MCP server for HermesWhois domain lookup service",
+  "description": "Model Context Protocol (MCP) server for HermesWhois API - Provides WHOIS domain lookup and SSL certificate information through Claude Desktop and other MCP-compatible applications",
   "type": "module",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "bin": {
     "hermeswhois-mcp-server": "./build/index.js"
   },
+  "files": [
+    "build/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "dev": "node --loader ts-node/esm src/index.ts"
+    "dev": "node --loader ts-node/esm src/index.ts",
+    "clean": "rm -rf build",
+    "test:whois": "node test-api.js",
+    "test:ssl": "node test-ssl.js"
   },
   "keywords": [
     "mcp",
+    "model-context-protocol",
     "whois",
+    "domain-lookup",
+    "ssl-certificate",
+    "ssl-checker",
     "hermeswhois",
-    "domain"
+    "domain-information",
+    "certificate-validator",
+    "claude-desktop",
+    "dns",
+    "registrar"
   ],
   "author": "",
   "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.4",
     "node-fetch": "^3.3.2"
@@ -28,5 +50,13 @@
     "@types/node": "^22.10.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/hermeswhois-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/hermeswhois-mcp-server/issues"
+  },
+  "homepage": "https://github.com/yourusername/hermeswhois-mcp-server#readme"
 }
