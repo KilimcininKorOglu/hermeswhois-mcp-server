@@ -1,0 +1,32 @@
+{
+  "name": "hermeswhois-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for HermesWhois domain lookup service",
+  "type": "module",
+  "bin": {
+    "hermeswhois-mcp-server": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "dev": "node --loader ts-node/esm src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "whois",
+    "hermeswhois",
+    "domain"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
