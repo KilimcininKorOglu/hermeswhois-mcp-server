@@ -9,6 +9,23 @@ Bu MCP sunucusu, Claude Desktop ve diğer MCP uyumlu uygulamalar için HermesWho
 1. **WHOIS Sorgulama**: Domain kayıt bilgileri, registrar detayları ve DNS yapılandırması
 2. **SSL Sertifika Analizi**: Sertifika geçerliliği, issuer bilgileri ve alternative names
 
+### Hızlı Kullanım (Code Mode)
+
+MCP server'a bağlanmadan doğrudan script ile sorgulama yapabilirsiniz:
+
+```bash
+# WHOIS sorgusu
+node scripts/hermeswhois-api.js whois google.com
+
+# SSL sorgusu
+node scripts/hermeswhois-api.js ssl github.com
+
+# Her ikisi birden
+node scripts/hermeswhois-api.js both cloudflare.com
+```
+
+> **Not**: Code Mode yaklaşımı token kullanımını %80-98 azaltır. Detaylar için: [Cloudflare Code Mode Blog](https://blog.cloudflare.com/code-mode/)
+
 ## Teknik Özellikler
 
 ### WHOIS Sorgulama Yetenekleri
@@ -466,13 +483,19 @@ node test-ssl.js
 ```bash
 hermeswhois-mcp-server/
 ├── src/
-│   └── index.ts          # Ana MCP sunucu kodu
+│   ├── index.ts          # Stdio transport (Claude Desktop)
+│   └── server-sse.ts     # SSE transport (Web deployment)
+├── scripts/
+│   └── hermeswhois-api.js # Standalone API script (Code Mode)
 ├── build/                # Derlenmiş JavaScript dosyaları
 ├── test-api.js          # WHOIS API test script'i
 ├── test-ssl.js          # SSL API test script'i
+├── skill.md             # TypeScript API tanımı (LLM için)
+├── CLAUDE.md            # Claude Code rehberi
+├── AGENTS.md            # AI agent rehberi
 ├── package.json         # NPM bağımlılıkları
 ├── tsconfig.json        # TypeScript yapılandırması
-└── README.md           # Bu dosya
+└── README.md            # Bu dosya
 ```
 
 ## Teknik Detaylar
@@ -490,12 +513,61 @@ hermeswhois-mcp-server/
 
 - @modelcontextprotocol/sdk: ^1.0.4
 - node-fetch: ^3.3.2
+- express: ^4.18.2
+- cors: ^2.8.5
 
 **Development Dependencies**:
 
 - @types/node: ^22.10.2
+- @types/express: ^4.17.21
+- @types/cors: ^2.8.17
 - ts-node: ^10.9.2
 - typescript: ^5.7.2
+
+## Code Mode
+
+AI agent'lar için optimize edilmiş kullanım. MCP tool call overhead'i olmadan doğrudan API erişimi:
+
+| Dosya | Açıklama |
+|-------|----------|
+| `scripts/hermeswhois-api.js` | Standalone çalıştırılabilir script |
+| `skill.md` | TypeScript API tanımı (LLM context için) |
+
+### Örnek Çıktı
+
+```bash
+$ node scripts/hermeswhois-api.js whois cloudflare.com
+```
+
+```json
+{
+  "domain": "cloudflare.com",
+  "creationDate": "2009-02-17",
+  "expiryDate": "2033-02-17",
+  "registrarUrl": "http://www.cloudflare.com",
+  "dnssec": "signedDelegation",
+  "cached": true
+}
+```
+
+```bash
+$ node scripts/hermeswhois-api.js ssl github.com
+```
+
+```json
+{
+  "domain": "github.com",
+  "sslDomain": "github.com",
+  "validFrom": "2025-02-05 03:00:00",
+  "validTo": "2026-02-06 02:59:59",
+  "daysUntilExpiry": 48,
+  "expired": false,
+  "issuer": "Sectigo ECC Domain Validation Secure Server CA",
+  "cached": false
+}
+```
+
+> Referans: [Cloudflare Code Mode Blog](https://blog.cloudflare.com/code-mode/)
 
 ## Lisans
 
